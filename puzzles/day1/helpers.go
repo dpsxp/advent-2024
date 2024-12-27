@@ -1,9 +1,7 @@
 package day1
 
 import (
-	"io"
-	"os"
-	"path/filepath"
+	"advent/lib"
 	"strconv"
 	"strings"
 )
@@ -42,7 +40,7 @@ func sortList(data []int) []int {
 func readLines(fileName string) dataLines {
 	dataLines := &dataLines{}
 
-	fileLines := getLinesFromFile(fileName)
+	fileLines := lib.GetLinesFromFile(fileName)
 
 	for _, line := range fileLines {
 		dataItems := strings.Split(line, "   ")
@@ -67,51 +65,4 @@ func readLines(fileName string) dataLines {
 	}
 
 	return *dataLines
-}
-
-func getLinesFromFile(fileName string) []string {
-	path, err := filepath.Abs(fileName)
-
-	if err != nil {
-		panic(err)
-	}
-
-	file, err := os.Open(path)
-
-	if err != nil {
-		panic(err)
-	}
-
-	MAX_BYTES := 1
-
-	bytes := make([]byte, MAX_BYTES)
-
-	dataBuffer := ""
-
-	lines := []string{}
-
-	for {
-		n, err := file.Read(bytes)
-
-		if err != nil && err != io.EOF {
-			panic(err)
-		}
-
-		if n < MAX_BYTES {
-			break
-		}
-
-		char := string(bytes)
-
-		if char != "\n" {
-			dataBuffer += char
-			continue
-		}
-
-		lines = append(lines, dataBuffer)
-
-		dataBuffer = ""
-	}
-
-	return lines
 }
